@@ -1,1 +1,1 @@
-# Reset Training using Pytorch Lightning 
+# Resnet Training using Pytorch Lightning 
