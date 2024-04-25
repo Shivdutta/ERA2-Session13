@@ -572,10 +572,6 @@ model.eval()
 - The app has four tabs:
   - GradCam
   - Misclassified Images
-  - Feature Maps
-  - Kernels
-- Each tab has a separate set of inputs, outputs and click buttons
-
 ```python
 
 ```
