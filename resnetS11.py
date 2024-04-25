@@ -16,10 +16,9 @@ from torchvision.datasets import CIFAR10
 from pytorch_lightning import LightningModule, Trainer
 from torchmetrics import Accuracy
 
-# Local Imports
-from datasets import AlbumDataset
+from datasets import TransformedDataset
 from utils import get_cifar_statistics
-from visualize import visualize_cifar_augmentation, display_cifar_data_samples
+from utils import visualize_cifar_augmentation, display_cifar_data_samples
 
 
 class BasicBlock(LightningModule):
@@ -46,13 +45,13 @@ class BasicBlock(LightningModule):
         out = F.relu(out)
         return out
 
-class LITResNet(LightningModule, BasicBlock):
+class LITResNet(LightningModule):
     def __init__(self, class_names, data_dir='/data/'):
         """
         Constructor
         """
         # Initialize the Module class
-        super().__init__()
+        super(LITResNet,self).__init__()
 
         # Initialize variables
         self.classes = class_names
@@ -86,8 +85,6 @@ class LITResNet(LightningModule, BasicBlock):
         self.pool4 = None
         self.fc = None
         self.dropout_value = None
-
-        # Initialize all the layers
         self.model_layers(BasicBlock, [2, 2, 2, 2])
 
     # ##################################################################################################
@@ -254,12 +251,12 @@ class LITResNet(LightningModule, BasicBlock):
 
             # Assign train/val datasets for use in dataloaders
             if stage == "fit" or stage is None:
-                cifar10_full = AlbumDataset(self.data_dir, train=True, download=True, transform=self.train_transforms)
+                cifar10_full = TransformedDataset(self.data_dir, train=True, download=True, transform=self.train_transforms)
                 self.cifar10_train, self.cifar10_val = random_split(cifar10_full, [45_000, 5_000])
 
             # Assign test dataset for use in dataloader(s)
             if stage == "test" or stage is None:
-                self.cifar10_test = AlbumDataset(self.data_dir, train=False, download=True,
+                self.cifar10_test = TransformedDataset(self.data_dir, train=False, download=True,
                                                  transform=self.test_transforms)
 
     def train_dataloader(self):
@@ -315,7 +312,7 @@ class LITResNet(LightningModule, BasicBlock):
         Method to visualize augmentations
         :param aug_set_transforms: Dictionary of transformations to be visualized
         """
-        aug_train = AlbumDataset('./data', train=True, download=True)
+        aug_train = TransformedDataset('./data', train=True, download=True)
         visualize_cifar_augmentation(aug_train, aug_set_transforms)
 
     # #############################################################################################
@@ -360,6 +357,21 @@ class LITResNet(LightningModule, BasicBlock):
                         self.misclassified_data.append((image, label, pred))
         return self.misclassified_data
 
+    def display_data_samples(self, dataset="train", num_of_images=20):
+        """
+        Method to display data samples
+        """
+        # Execute self.prepare_data() only if not done earlier
+        try:
+            assert self.stats_train
+        except AttributeError:
+            self.prepare_data()
+    
+        if dataset == "train":
+            display_cifar_data_samples(self.stats_train, num_of_images, self.classes)
+        else:
+            display_cifar_data_samples(self.stats_test, num_of_images, self.classes)
+            
     def display_cifar_misclassified_data(self, number_of_samples: int = 10):
         """
         Function to plot images with labels
