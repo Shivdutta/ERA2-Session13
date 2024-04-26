@@ -1,28 +1,30 @@
 # PyTorch Lightning
 
-
 This repository contains following files:
 
-- `resnet.py`: Model Architecture by Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun -- Deep Residual Learning for Image Recognition. arXiv:1512.03385
+- `S13`: Notebook containing model training code using Pytorch Lightning
+
+From Master repository below files are downloaded [Master Repo](https://github.com/Shivdutta/ERA2-Master)
+
+- `resnetS11.py`: Model Architecture by Kaiming He, Xiangyu Zhang, Shaoqing Ren, Jian Sun -- Deep Residual Learning for Image Recognition. arXiv:1512.03385.
+   All the classes are interited from Pytorch Lightning Module
 - `dataset.py`: Contains class to use with [albumentations](https://github.com/albumentations-team/albumentations) library with PyTorch dataset
 - `utils.py`: Contains functions to get misclassified data, dataset statistics and model summary, visualize data samples, augmentations, and misclassified images
-- `S13`: Notebook containing model training code using Pytorch Lightning
 
 ## Code Details
 
-- In the above notebook, following steps are performed to achieve above 85% accuracy on CIFAR10 dataset in 24 epochs
+- In the notebook mentioned above, several steps are executed to attain an accuracy of over 85% on the CIFAR10 dataset within 24 epochs:
+- Training the model utilizing PyTorch Lightning.
+- Leveraging Lightning enhances code conciseness, modularity, and facilitates parameter logging and monitoring. Additionally, it enables the saving of   checkpoints and early stopping based on various criteria."
 
-- The model is trained using PyTorch Lightning
+### Model
 
-- Using Lightning makes the code more compact, modular, easy to log and monitor parameters along with the saving checkpoints and early stopping based on different criteria
 
-  ### Model
-
-- After importing all the modules and files in this repository, instance of the Network class is created
-- The network class `LITResNet` is a child of two classes:
-  - LightningModule
-  - BasicBlock
-- BasicBlocks is a resuable custom class containing different convolutional layers which make the core more organized and readable
+- After importing all modules and files from this repository, an instance of the Resnet class is instantiated. 
+- The neural network class LITResNet inherits from two parent classes:
+  -  LightningModule 
+  -  BasicBlock. 
+- BasicBlock serves as a reusable custom class - comprising various convolutional layers, enhancing the organization and readability of the core structure."
 
 ```python
 classes = ('plane', 'car', 'bird', 'cat', 'deer',
@@ -113,13 +115,11 @@ LITResNet(
   )
   (linear): Linear(in_features=512, out_features=10, bias=True)
 )
-
 ```
-
 ### Data Statistics
 
-- All the data related hooks are part of the same model class
-- Hence the process of extract, load and transforming is done with the method of the class
+- All data-related operations are encapsulated within the model class itself. 
+- Therefore, the extraction, loading, and transformation processes are performed using methods defined within the class.
 
 ```python
 model.get_statistics()
@@ -145,7 +145,6 @@ model.get_statistics(data_set_type="Test")
  - var: (0.06083748, 0.058996636, 0.06843062)
 ```
 
-
 ### Data Visualization
 
 ```python
@@ -153,8 +152,6 @@ model.display_data_samples()
 ```
 
 ![Data Samples](Data/samples.png)
-
-
 
 ### Data Augmentation
 
@@ -176,7 +173,7 @@ model.visualize_augmentation(aug_set_transforms)
 
 ### Data Transformations
 
-Training and test data transformation is done using `set_transforms()`
+Training and test data transformation is done by using `set_transforms()`
 
 ```python
 # Train Phase transformations
@@ -197,23 +194,19 @@ test_set_transforms = {
 # Set transformations for training and test dataset
 model.set_transforms(train_set_transforms, test_set_transforms)
 ```
-
-
-
 ### Learning Rate Finder
 
-- LRFinder is used to find the best and optimal learning rate intially
-- One Cycle Policy is used to modify learning rate during training phase
-- A value of `5.38E-02` is taken as maximum learning rate
+- The LRFinder is employed to determine the optimal initial learning rate.
+- Subsequently, the One Cycle Policy adjusts the learning rate during the training phase.
+- The maximum learning rate is set to 5.38E-02."
 
 ![](Data/lr_finder.png)
 
 ### Training Configuration
 
-- `LearningRateMonitor` This is from PyTorch Lightning module and it is used to monitor learning rate during training
-- `ModelCheckpoint` This is from PyTorch Lightning module and it is used to save the model during training based on the validation loss
-- `ModelSummary` from PyTorch Lightning module is used to detailed print the network summary
-- `Trainer` This is from PyTorch Lightning module and it is used to to train the model 
+- The LearningRateMonitor from the PyTorch Lightning module is utilized to track the learning rate throughout the training process.
+- The ModelCheckpoint module is employed to save the model during training based on the validation loss. ModelSummary, also from the PyTorch Lightning module, is utilized to print a detailed summary of the network architecture.
+- Lastly, the Trainer from the PyTorch Lightning module is used to facilitate the training of the model."
 
 ```python
 # Monitor Learning rate while training to verify correct implementation of One cycle policy
@@ -238,8 +231,6 @@ trainer = pl.Trainer(
 # Train the Model
 trainer.fit(model)
 ```
-
-
 
 ### Model Training
 
@@ -401,7 +392,6 @@ Could not render content for 'application/vnd.jupyter.widget-view+json'
 INFO:pytorch_lightning.utilities.rank_zero:Epoch 23, global step 2112: 'val_loss' reached -7.19550 (best -7.19550), saving model to '/content/drive/MyDrive/Colab_Notebooks/Session13/lightning_logs/version_1/checkpoints/epoch=23-step=2112.ckpt' as top 1
 INFO:pytorch_lightning.utilities.rank_zero:`Trainer.fit` stopped: `max_epochs=24` reached.
 ```
-
 - Test Accuracy
 
 ```python
@@ -421,9 +411,9 @@ INFO:pytorch_lightning.utilities.rank_zero:`Trainer.fit` stopped: `max_epochs=24
 
 - Validation Accuracy
 
-  ```python
+```python
   trainer.validate()
-  ```
+```
 
 ```bash
 ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -438,7 +428,6 @@ INFO:pytorch_lightning.utilities.rank_zero:`Trainer.fit` stopped: `max_epochs=24
 ### Training Logs
 
 - Training data is recorded during training
-- Values can be logged using `self.log("ParamName", value)`
 - Following are the learning rate, training and test accuracies logged during model training
 
 ```python
@@ -523,56 +512,8 @@ INFO:pytorch_lightning.utilities.rank_zero:`Trainer.fit` stopped: `max_epochs=24
   plt.show()
 
   ```
-
 ---
 
 ## Gradio App
-
-![](Data/app.jpg)
-
-- Trained model from above code is used to perform inference on the Gradio app
-- The above notebook contains code to create and visualize the app on the Colab
-
-- Following are the code details for the Gradio app
-
-### Load Model
-
-```python
-classes = ('plane', 'car', 'bird', 'cat', 'deer',
-           'dog', 'frog', 'horse', 'ship', 'truck')
-
-model = LITResNet.load_from_checkpoint(model_path, map_location=torch.device('cpu'), strict=False, class_names=classes)
-model.eval()
-```
-
-### GradCam
-
-- Image is taken as an input from the user along with the transparency values, number of top classes and target layer for GradCam
-- After normalizing the image, it is sent to model and predictions are recorded
-- Based on the input of number of top classes, the prediction results are displayed on the app
-- Based on the layer number and transparency, GradCam image is displayed on the app
-
-```python
-
-```
-
-### Misclassified Images
-
-- Number of misclassified images to be seen is taken as input
-- Images from the misclassified directory are imported as shown based on the number input by the user
-- Name of the files are in saved in `correct_misclassified.png` format
-- Using this, correct and misclassified classes name are extracted and shown on the app
-
-```python
-
-```
-### App
-
-- Following is the code for the app
-- The app has four tabs:
-  - GradCam
-  - Misclassified Images
-```python
-
-```
-
+- Link of Gradio app: https://huggingface.co/spaces/Shivdutta/S13
+- Readme file for Gradio app : https://huggingface.co/spaces/Shivdutta/S13/blob/main/README.md
