@@ -8,7 +8,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.utils.data import DataLoader, random_split
+from torch.utils_new.data import DataLoader, random_split
 
 from torchvision import transforms
 from torchvision.datasets import CIFAR10
@@ -17,8 +17,8 @@ from pytorch_lightning import LightningModule, Trainer
 from torchmetrics import Accuracy
 
 from datasets import TransformedDataset
-from utils import get_cifar_statistics
-from utils import visualize_cifar_augmentation, display_cifar_data_samples
+from utils_new import get_cifar_statistics
+from utils_new import visualize_cifar_augmentation, display_cifar_data_samples
 
 
 class BasicBlock(LightningModule):
