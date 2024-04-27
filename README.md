@@ -518,5 +518,5 @@ INFO:pytorch_lightning.utilities.rank_zero:`Trainer.fit` stopped: `max_epochs=24
 - Link of Gradio app: https://huggingface.co/spaces/Shivdutta/S13
 - Readme file for Gradio app : https://huggingface.co/spaces/Shivdutta/S13/blob/main/README.md
 
-![Gradio Interface](https://raw.githubusercontent.com/Shivdutta/ERA2-Session13/main/gradio-S13-1.png)
+![Gradio Interface](https://raw.githubusercontent.com/Shivdutta/ERA2-Session13/main/gradio-S13-1-new.png)
 ![Gradio Interface](https://raw.githubusercontent.com/Shivdutta/ERA2-Session13/main/gradio-S13-2.png)
